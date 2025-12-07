@@ -5,6 +5,45 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.5] - 2025-12-07
+
+### Added
+
+#### New Features
+- **JSON Output**: New `--json` flag for structured output compatible with CI/CD pipelines and automation tools
+- **Quiet Mode**: New `--quiet` (or `-q`) flag for minimal output, showing only critical errors
+- **Local Files Support**: New `--include-local` flag to validate `.env.local` files that are typically gitignored
+- **Enhanced Exit Codes**: Specific exit codes (0-7) for different failure scenarios to enable better error handling in scripts
+
+#### Improvements
+- **Better Error Messages**: More descriptive warnings and errors with actionable suggestions
+  - Invalid variable names now show valid format and suggestions
+  - Security errors explain what was blocked and why
+  - Missing variables show descriptions from .env.example comments
+- **Improved Developer Experience**: More informative output helps developers fix issues faster
+
+### Changed
+- Error messages now include suggestions for fixing common issues
+- Security warnings provide more context about blocked operations
+- Updated CLI help text with new flags
+
+### Documentation
+- Added sections for JSON output, quiet mode, and local files support
+- Updated comparison table with new features
+- Added real-world examples for new flags
+
+### Testing
+- Added 12 new tests (101 tests total)
+- 92%+ test coverage maintained
+- New test files: formatter.test.ts, messages.test.ts
+
+### License
+- Changed from MIT to MIT + Commons Clause
+- Non-commercial use license with attribution requirement
+- Updated README and LICENSE files accordingly
+
+---
+
 ## [0.4.0] - 2025-12-07
 
 ### Added
@@ -67,4 +106,5 @@ Initial public release with core functionality:
 
 ---
 
+[0.4.5]: https://github.com/686f6c61/env-doctor-cli/compare/v0.4.0...v0.4.5
 [0.4.0]: https://github.com/686f6c61/env-doctor-cli/compare/v0.3.0...v0.4.0

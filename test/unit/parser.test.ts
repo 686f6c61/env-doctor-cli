@@ -146,6 +146,20 @@ describe('Parser Core', () => {
 
       consoleWarnSpy.mockRestore();
     });
+
+    it('should handle unclosed quoted value', () => {
+      const input = `KEY="unclosed`;
+      const result = parseEnv(input);
+      // When closing quote is not found (closingIndex <= 0), value stays as-is
+      expect(result.variables['KEY']).toBeDefined();
+    });
+
+    it('should combine block comments with inline comments', () => {
+      const input = `# This is a block comment\nKEY=value # inline comment`;
+      const result = parseEnv(input);
+      expect(result.variables['KEY'].comment).toContain('This is a block comment');
+      expect(result.variables['KEY'].comment).toContain('inline comment');
+    });
   });
 
   describe('readEnvFile', () => {

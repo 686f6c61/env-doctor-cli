@@ -1,8 +1,8 @@
 /**
- * @license MIT
+ * @license MIT + Commons Clause
  * @author 686f6c61 <https://github.com/686f6c61>
  * @repository https://github.com/686f6c61/env-doctor-cli
- * @version 0.4.0
+ * @version 0.4.5
  */
 
 import fg from 'fast-glob';
@@ -11,13 +11,25 @@ import { MAX_FILES_SCAN } from './validation';
 
 /**
  * Scans the current directory for environment files
+ * Uses fast-glob to find .env and .env.* files while excluding templates
+ * Automatically filters out template files (.env.example, .env.template, .env.sample)
+ * @param includeLocal - Include .env.local files in scan (default: false for security)
+ * @param maxFiles - Maximum number of files to scan (default: MAX_FILES_SCAN for safety)
  * @returns Array of file paths found (relative to cwd)
  */
-export const findEnvFiles = async (maxFiles: number = MAX_FILES_SCAN): Promise<string[]> => {
+export const findEnvFiles = async (includeLocal: boolean = false, maxFiles: number = MAX_FILES_SCAN): Promise<string[]> => {
   try {
+    const ignorePatterns = ['node_modules', '.git', '.env.example', '.env.template', '.env.sample'];
+
+    // By default, ignore .env.local files unless explicitly requested
+    if (!includeLocal) {
+      ignorePatterns.push('.env.local');
+      ignorePatterns.push('.env.*.local');
+    }
+
     const files = await fg(['.env', '.env.*'], {
       dot: true,
-      ignore: ['node_modules', '.git', '.env.example', '.env.template', '.env.sample'],
+      ignore: ignorePatterns,
       cwd: process.cwd()
     });
 

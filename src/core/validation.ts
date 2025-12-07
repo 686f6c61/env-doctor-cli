@@ -1,14 +1,19 @@
 /**
- * @license MIT
+ * @license MIT + Commons Clause
  * @author 686f6c61 <https://github.com/686f6c61>
  * @repository https://github.com/686f6c61/env-doctor-cli
- * @version 0.4.0
+ * @version 0.4.5
  *
  * Security validation module
  */
 
 import fs from 'fs';
 import path from 'path';
+import {
+  getPathTraversalMessage,
+  getSymlinkBlockedMessage,
+  getFileSizeExceededMessage
+} from '../utils/messages';
 
 // Security constants
 export const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB

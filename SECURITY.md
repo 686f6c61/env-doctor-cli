@@ -8,9 +8,9 @@
 | 0.3.x   | YES       |
 | < 0.3   | NO        |
 
-## Security Enhancements in v0.4.0
+## Security Enhancements in v0.4.x
 
-Version 0.4.0 introduces comprehensive security hardening to protect against common attack vectors when processing `.env` files.
+Version 0.4.0 introduced comprehensive security hardening to protect against common attack vectors when processing `.env` files. Version 0.4.5 adds enhanced error messages, JSON output for CI/CD integration, and improved exit codes for better automation security.
 
 ### Path Traversal Protection
 
@@ -204,11 +204,27 @@ try {
    npx env-doctor --ci
    ```
 
+   Use `--json` for programmatic parsing in automation:
+   ```bash
+   npx env-doctor --json
+   ```
+
 3. **Limit file permissions**
    The tool automatically sets `.env` files to `0600` (owner read/write only) when using `--fix`.
 
 4. **Review generated files**
    Always review `.env.example` files generated with `--generate` to ensure no secrets were leaked.
+
+5. **Use specific exit codes**
+   Version 0.4.5 introduces specific exit codes (0-7) for different failure scenarios, enabling better error handling in automation:
+   - 0: Success
+   - 1: Missing variables
+   - 2: Extra variables
+   - 3: Security warning
+   - 4: File not found
+   - 5: Invalid arguments
+   - 6: Permission denied
+   - 7: File size exceeded
 
 ### For Contributors
 
@@ -250,12 +266,14 @@ You should receive a response within 48 hours. If the vulnerability is confirmed
 Before releasing a new version, ensure:
 
 - [ ] All tests pass (`npm test`)
-- [ ] Coverage remains above 90% (`npm test -- --coverage`)
+- [ ] Coverage remains above 99% (`npm test -- --coverage`)
 - [ ] No new `npm audit` vulnerabilities
 - [ ] All file operations use `validateFile()`
 - [ ] Error messages are sanitized
 - [ ] Input validation is comprehensive
 - [ ] Documentation is updated
+- [ ] All source files have MIT + Commons Clause license header
+- [ ] Version numbers updated in all files
 
 ---
 
@@ -269,4 +287,4 @@ Before releasing a new version, ensure:
 ---
 
 **Last Updated:** 2025-12-07
-**Version:** 0.4.0
+**Version:** 0.4.5

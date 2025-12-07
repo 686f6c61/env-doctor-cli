@@ -1,8 +1,8 @@
 /**
- * @license MIT
+ * @license MIT + Commons Clause
  * @author 686f6c61 <https://github.com/686f6c61>
  * @repository https://github.com/686f6c61/env-doctor-cli
- * @version 0.4.0
+ * @version 0.4.5
  */
 
 import fs from 'fs';
@@ -12,6 +12,9 @@ import { validateFile, validateVarName, sanitizeErrorMessage } from './validatio
 
 /**
  * Checks if a variable name suggests it contains sensitive data
+ * Uses pattern matching to identify common sensitive variable names
+ * @param key Variable name to check
+ * @returns true if the name suggests sensitive data (e.g., contains "KEY", "SECRET", "PASSWORD")
  */
 const isSensitive = (key: string): boolean => {
   const sensitivePatterns = [
@@ -35,7 +38,12 @@ const isSensitive = (key: string): boolean => {
 
 /**
  * Generates a .env.example file from an existing .env file
- * sanitizing sensitive values.
+ * Preserves structure, comments, and empty lines while sanitizing sensitive values
+ * Sensitive variables (containing KEY, SECRET, PASSWORD, etc.) are emptied
+ * Non-sensitive configuration values (PORT, NODE_ENV, etc.) are preserved
+ * @param sourcePath Path to the source .env file
+ * @param targetPath Path where the .env.example will be written (default: '.env.example')
+ * @returns true if generation succeeded, false otherwise
  */
 export const generateExample = (
   sourcePath: string,
