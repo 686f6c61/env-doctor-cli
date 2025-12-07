@@ -1,0 +1,72 @@
+{
+  "name": "env-doctor-cli",
+  "version": "0.4.0",
+  "description": "The ESLint for your .env files - Synchronize, validate, and manage environment variables with security hardening",
+  "bin": {
+    "env-doctor": "./bin/envcheck.js"
+  },
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "start": "node bin/envcheck.js",
+    "dev": "ts-node src/index.ts",
+    "test": "jest",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "env",
+    "dotenv",
+    "check",
+    "validate",
+    "sync",
+    "cli",
+    "doctor",
+    "env-check"
+  ],
+  "author": "686f6c61",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/686f6c61/env-doctor-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/686f6c61/env-doctor-cli/issues"
+  },
+  "homepage": "https://github.com/686f6c61/env-doctor-cli#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/686f6c61/env-doctor-cli"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "bin",
+    "lib",
+    "LICENSE",
+    "README.md",
+    "SECURITY.md",
+    "CHANGELOG.md"
+  ],
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "commander": "^14.0.2",
+    "fast-glob": "^3.3.3",
+    "ignore": "^7.0.5",
+    "table": "^6.9.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/mock-fs": "^4.13.4",
+    "@types/node": "^24.10.1",
+    "@types/table": "^6.0.0",
+    "jest": "^30.2.0",
+    "mock-fs": "^5.5.0",
+    "ts-jest": "^29.4.6",
+    "typescript": "^5.9.3"
+  }
+}
