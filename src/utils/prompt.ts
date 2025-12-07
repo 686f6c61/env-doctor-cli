@@ -1,8 +1,8 @@
 /**
- * @license MIT
+ * @license MIT + Commons Clause
  * @author 686f6c61 <https://github.com/686f6c61>
  * @repository https://github.com/686f6c61/env-doctor-cli
- * @version 0.4.0
+ * @version 0.4.5
  */
 
 import readline from 'readline';

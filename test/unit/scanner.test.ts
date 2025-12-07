@@ -53,12 +53,37 @@ describe('Scanner Core', () => {
 
     const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
 
-    const result = await findEnvFiles(10);
+    const result = await findEnvFiles(false, 10);
 
     expect(result.length).toBe(10);
     expect(consoleWarnSpy).toHaveBeenCalledWith(expect.stringContaining('Found 20 environment files'));
 
     consoleWarnSpy.mockRestore();
+  });
+
+  it('should include .env.local files when includeLocal is true', async () => {
+    (fg as unknown as jest.Mock).mockResolvedValue(['.env', '.env.local', '.env.dev.local']);
+
+    const files = await findEnvFiles(true);
+
+    expect(files).toContain('.env');
+    expect(files).toContain('.env.local');
+    expect(files).toContain('.env.dev.local');
+  });
+
+  it('should exclude .env.local files by default', async () => {
+    (fg as unknown as jest.Mock).mockResolvedValue(['.env', '.env.development']);
+
+    const files = await findEnvFiles(false);
+
+    // The mock will return what we specify, but in real usage fast-glob would filter
+    // Just verify the ignore patterns are set correctly
+    expect(fg).toHaveBeenCalledWith(
+      ['.env', '.env.*'],
+      expect.objectContaining({
+        ignore: expect.arrayContaining(['.env.local', '.env.*.local'])
+      })
+    );
   });
 });
 

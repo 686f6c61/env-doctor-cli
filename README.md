@@ -1,7 +1,7 @@
 # env-doctor-cli
 
 [![npm version](https://img.shields.io/npm/v/env-doctor-cli.svg)](https://www.npmjs.com/package/env-doctor-cli)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT+CC](https://img.shields.io/badge/License-MIT%2BCommons%20Clause-blue.svg)](https://github.com/686f6c61/env-doctor-cli/blob/main/LICENSE)
 
 > **"The ESLint for your .env files"**
 
@@ -36,6 +36,9 @@ When evaluating environment variable management tools, it's important to underst
 | **Contextual Documentation** | [YES] | [NO] | [NO] | [NO] |
 | **Zero Config Setup** | [YES] | [NO] | [NO] | [NO] |
 | **CI/CD Ready** | [YES] | [YES] | [YES] | [YES] |
+| **JSON Output** | [YES] | [NO] | [NO] | [NO] |
+| **Quiet Mode** | [YES] | [NO] | [NO] | [NO] |
+| **Local Files Support** | [YES] | [NO] | [NO] | [NO] |
 
 ## Features
 
@@ -124,6 +127,83 @@ npx env-doctor --ci
 
 In CI mode, the tool disables colors, suppresses interactive confirmations, and exits with code 1 on any failure. This makes it perfect for gating deployments on environment variable validation. The concise output is also ideal for CI logs, focusing on errors rather than verbose success messages.
 
+### JSON Output for Automation
+
+For programmatic parsing and CI/CD integration, you can output results in JSON format instead of human-readable tables.
+
+```bash
+npx env-doctor --json
+```
+
+This outputs structured JSON that can be easily parsed by scripts, monitoring tools, or CI/CD pipelines:
+
+```json
+{
+  "status": "fail",
+  "sync_percentage": 85.7,
+  "missing": ["API_KEY", "DATABASE_URL"],
+  "extra": ["OLD_FEATURE_FLAG"],
+  "total_in_example": 14,
+  "total_in_target": 12,
+  "file_checked": ".env",
+  "template": ".env.example"
+}
+```
+
+**Use cases:**
+- Parse results in CI/CD pipelines
+- Send notifications to Slack/Discord with missing variables
+- Generate reports in monitoring dashboards
+- Block deployments based on specific conditions
+
+### Quiet Mode
+
+For minimal output in logs or when you only care about errors, use the `--quiet` or `-q` flag.
+
+```bash
+npx env-doctor --quiet
+```
+
+In quiet mode:
+- No colored output
+- No tables or visual formatting
+- Only critical errors are shown
+- Exit code still indicates status
+
+**Example output:**
+
+```bash
+# Success (no output)
+$ npx env-doctor --quiet
+$ echo $?
+0
+
+# Failure (minimal output)
+$ npx env-doctor --quiet
+Missing: API_KEY, DB_HOST
+$ echo $?
+1
+```
+
+### Local Files Support
+
+Many projects use `.env.local` files for developer-specific overrides that should not be committed. By default, env-doctor ignores these files, but you can include them in validation.
+
+```bash
+npx env-doctor --include-local
+```
+
+**What gets checked:**
+
+Without `--include-local` (default):
+- ✓ `.env`, `.env.development`, `.env.production`
+- ✗ `.env.local`, `.env.development.local` (ignored)
+
+With `--include-local`:
+- ✓ All .env files including `.env.local` variants
+
+**Note:** Local files are typically gitignored and contain developer-specific configuration. Only validate them if you need to ensure all developers have the correct local setup.
+
 ## CLI Options Reference
 
 The tool provides a comprehensive set of options to handle different workflows and edge cases. All options can be combined (except when they conflict logically, like `--fix` and `--generate`). The table below documents every available option:
@@ -135,6 +215,9 @@ The tool provides a comprehensive set of options to handle different workflows a
 | `--all` | `-a` | Automatically scan and check all `.env*` files found. | `false` |
 | `--fix` | `-f` | Automatically add missing variables to the target file. | `false` |
 | `--generate` | `-g` | Generate a `.env.example` file from the target file. | `false` |
+| `--json` | | **NEW** Output results in JSON format for parsing. | `false` |
+| `--quiet` | `-q` | **NEW** Minimal output, only show errors. | `false` |
+| `--include-local` | | **NEW** Include `.env.local` files in validation. | `false` |
 | `--ci` | | Enable strict CI mode (no colors, no interaction). | `false` |
 | `--no-colors` | | Disable colored output in the terminal. | `false` |
 | `--version` | `-V` | Show current version number. | |
@@ -262,4 +345,15 @@ If this tool saves you time or prevents production issues, consider starring the
 
 ## License
 
-This project is licensed under the **MIT License**, allowing free use, modification, and distribution in both personal and commercial projects. See the [LICENSE](https://github.com/686f6c61/env-doctor-cli/blob/main/LICENSE) file for complete terms.
+This project is licensed under the **MIT License + Commons Clause**.
+
+**What this means:**
+- [YES] Free to use for personal, educational, and internal business purposes
+- [YES] Free to modify and adapt to your needs
+- [YES] Free to share and redistribute (with attribution)
+- [NO] Cannot be sold or used to provide commercial services
+- [REQUIRED] Must credit the original author: **686f6c61**
+
+For the complete license terms, see the [LICENSE](https://github.com/686f6c61/env-doctor-cli/blob/main/LICENSE) file.
+
+For commercial licensing inquiries, please open an issue on GitHub.

@@ -1,8 +1,8 @@
 /**
- * @license MIT
+ * @license MIT + Commons Clause
  * @author 686f6c61 <https://github.com/686f6c61>
  * @repository https://github.com/686f6c61/env-doctor-cli
- * @version 0.4.0
+ * @version 0.4.5
  */
 
 import fs from 'fs';
@@ -12,9 +12,11 @@ import { validatePath } from './validation';
 
 /**
  * Checks if a specific file pattern is ignored in .gitignore
+ * Reads .gitignore file and uses the 'ignore' package to check if file matches any ignore pattern
+ * Returns false if .gitignore doesn't exist (meaning file is NOT ignored)
  * @param filename The filename to check (e.g., '.env')
  * @param cwd Current working directory (optional, defaults to process.cwd())
- * @returns true if ignored or .gitignore doesn't exist (fail open), false if definitely not ignored
+ * @returns true if file is ignored by .gitignore, false if not ignored or .gitignore doesn't exist
  */
 export const checkGitIgnore = (filename: string, cwd: string = process.cwd()): boolean => {
   try {
